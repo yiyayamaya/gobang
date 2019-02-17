@@ -303,7 +303,7 @@ def jugby5(x,y,chessboard,mode):
                 totalmark = totalmark + 10
             elif numofm == 1 :
                 totalmark = totalmark + 10*-1
-
+                print("test")
 
 
 
