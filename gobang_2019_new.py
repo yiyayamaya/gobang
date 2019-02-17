@@ -286,9 +286,9 @@ def jugby5(x,y,chessboard,mode):
                 totalmark = totalmark + 40*-1
         elif numofkeng==2:
             if numofe==3 :
-                totalmark=totalmark+80
+                totalmark=totalmark+140
             elif  numofm==3:
-                totalmark=totalmark+80*-1
+                totalmark=totalmark+200*-1
             elif numofe==2 :
                 totalmark = totalmark + 30
             elif numofm==2:
