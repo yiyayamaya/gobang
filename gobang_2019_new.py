@@ -36,7 +36,7 @@ class AI(object):
  # The input is current chessboard.
     def go(self, chessboard):
 
-        
+        starttime = time.time()
 
         self.candidate_list.clear()
 
@@ -52,17 +52,24 @@ class AI(object):
         for i in range(15):
             for j in range(15):
                 if chessboard[i][j]==0:
-                    chessboardmoni=chessboard.copy()
-                    chessboardmoni[i][j]=1 #第一次模拟 下白棋
-                    #biglist.append({(i,j):suanfen(chessboardmoni)})
-                    bigdic[(i,j)]=suanfen(chessboardmoni)
+
+
+                    if calusurround(chessboard, i, j) != 0:
+
+                        chessboardmoni=chessboard.copy()
+                        chessboardmoni[i][j]=1 #第一次模拟 下白棋
+                        #biglist.append({(i,j):suanfen(chessboardmoni)})
+                        bigdic[(i,j)]=suanfen(chessboardmoni)
         
 
         #print("bigdic\n",bigdic)
         erzilist=[]
         erzilistfen=[]
 
-        for i in range(5):#第一层模拟次数
+        starttime2 = time.time()
+
+
+        for i in range(8):#第一层模拟次数
             amax=max(bigdic,key=bigdic.get)
 
             erzilistfen.append(bigdic[amax])
@@ -74,6 +81,8 @@ class AI(object):
         chessboardlist = []
         bijiaoerzi = []
 
+        starttime3 = time.time()
+
         for i in range(len(erzilist)):
 
             chessboardson = chessboard.copy()
@@ -82,22 +91,22 @@ class AI(object):
 
 
             chessboardlist.append(chessboardson)
-
-
+        starttime4 = time.time()
 
         for index in range(len(erzilist)):
             bigdicerzi = {}
             for i in range(15):
                 for j in range(15):
                     if chessboardlist[index][i][j] == 0:
-                        chessboardsonmoni = chessboardlist[index].copy()
-                        chessboardsonmoni[i][j] = -1  # 第二次模拟 下黑棋
-                        bigdicerzi[(i, j)] = suanfen(chessboardsonmoni)
+                        if calusurround(chessboard, i, j) !=0:
+                            chessboardsonmoni = chessboardlist[index].copy()
+                            chessboardsonmoni[i][j] = -1  # 第二次模拟 下黑棋
+                            bigdicerzi[(i, j)] = suanfen(chessboardsonmoni)
 
 
             sunzilist = []
 
-            for i in range(3):
+            for i in range(3): #这个3并无意义 实际黑棋不会看分最低的三个 只会选分最低的一个
                 amin = min(bigdicerzi, key=bigdicerzi.get)
 
                 sunzilist.append(bigdicerzi[amin])
@@ -108,7 +117,7 @@ class AI(object):
             print(sunzilist)
             bijiaoerzi.append(sunzilist[0])
 
-
+        starttime5 = time.time()
 
 
 
@@ -119,7 +128,12 @@ class AI(object):
         print("白下",erzilist[indexoferzi])
         self.candidate_list.clear()
         self.candidate_list.append((erzilist[indexoferzi][0],erzilist[indexoferzi][1]))
-    
+
+        starttime6 = time.time()
+
+
+        print(starttime2-starttime,starttime3-starttime2,starttime4-starttime3,starttime5-starttime4
+              ,starttime6-starttime5)
 
 
 
@@ -143,9 +157,25 @@ class AI(object):
 
 
 
-
-
-
+def calusurround(chessboard,x,y):#计算一个棋子周围的棋子数(无论颜色) 若为0 则不值得在这里模拟并算分
+    neighboor=0
+    if sizeok(x-1,y-1,15) and chessboard[x-1][y-1]!=0:
+        neighboor=neighboor+1
+    if sizeok(x-1,y,15) and chessboard[x-1][y]!=0:
+        neighboor=neighboor+1
+    if sizeok(x-1,y+1,15) and chessboard[x-1][y+1]!=0:
+        neighboor=neighboor+1
+    if sizeok(x,y-1,15) and chessboard[x][y-1]!=0:
+        neighboor=neighboor+1
+    if sizeok(x,y+1,15) and chessboard[x][y+1]!=0:
+        neighboor=neighboor+1
+    if sizeok(x+1,y-1,15) and chessboard[x+1][y-1]!=0:
+        neighboor=neighboor+1
+    if sizeok(x+1,y,15) and chessboard[x+1][y]!=0:
+        neighboor=neighboor+1
+    if sizeok(x+1,y+1,15) and chessboard[x+1][y+1]!=0:
+        neighboor=neighboor+1
+    return neighboor
 
 
 
