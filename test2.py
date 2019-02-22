@@ -2,11 +2,8 @@
 # -*- coding: utf-8 -*-
 
 #test2 和test差不多  只不过test放在一个类里了 不过好像没什么必要
-"""
-Created on Fri Feb  2 20:04:38 2018
+#此文件为程序的入口
 
-@author: 23755
-"""
 
 import tkinter as tk
 
