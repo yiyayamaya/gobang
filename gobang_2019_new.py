@@ -36,8 +36,7 @@ class AI(object):
  # The input is current chessboard.
     def go(self, chessboard):
 
-        print("新的一步")
-        #print("刚刚执行go\n",chessboard)
+        
 
         self.candidate_list.clear()
 
@@ -57,102 +56,67 @@ class AI(object):
                     chessboardmoni[i][j]=1 #第一次模拟 下白棋
                     #biglist.append({(i,j):suanfen(chessboardmoni)})
                     bigdic[(i,j)]=suanfen(chessboardmoni)
-        #print(bigdic)
+        
 
-        print(bigdic)
+        #print("bigdic\n",bigdic)
         erzilist=[]
         erzilistfen=[]
 
-        for i in range(3):
+        for i in range(5):#第一层模拟次数
             amax=max(bigdic,key=bigdic.get)
-            #print(amax)
+
             erzilistfen.append(bigdic[amax])
             del bigdic[amax]
             erzilist.append(amax)
 
 
         print(erzilist,erzilistfen)
+        chessboardlist = []
+        bijiaoerzi = []
 
-        chessboardson1 = chessboard.copy()
-        chessboardson2 = chessboard.copy()
-        chessboardson3 = chessboard.copy()
-        chessboardson1[erzilist[0][0]][erzilist[0][1]] = 1
-        chessboardson2[erzilist[1][0]][erzilist[1][1]] = 1
-        chessboardson3[erzilist[2][0]][erzilist[2][1]] = 1
+        for i in range(len(erzilist)):
 
-        print(chessboardson1)
-        print(chessboardson2)
-        print(chessboardson3)
+            chessboardson = chessboard.copy()
 
-        bigdic1 = {}
-        for i in range(15):
-            for j in range(15):
-                if chessboardson1[i][j] == 0:
-                    chessboardson1moni = chessboardson1.copy()
-                    chessboardson1moni[i][j] = -1  # 第二次模拟 下黑棋
-                    bigdic1[(i, j)] = suanfen(chessboardson1moni)
+            chessboardson[erzilist[i][0]][erzilist[i][1]] = 1
 
 
-        son1sunzilist = []
-        #print(bigdic1)
-        for i in range(3):
-            amin = min(bigdic1, key=bigdic1.get)
-
-            son1sunzilist.append(bigdic1[amin])
-
-            del bigdic1[amin]
-            son1sunzilist.append(amin)
-
-        print(son1sunzilist)
-
-        bigdic2 = {}
-        for i in range(15):
-            for j in range(15):
-                if chessboardson2[i][j] == 0:
-                    chessboardson2moni = chessboardson2.copy()
-                    chessboardson2moni[i][j] = -1  # 第二次模拟 下黑棋
-                    bigdic2[(i, j)] = suanfen(chessboardson2moni)
-
-        son2sunzilist = []
-        # print(bigdic2)
-        for i in range(3):
-            amin = min(bigdic2, key=bigdic2.get)
-
-            son2sunzilist.append(bigdic2[amin])
-
-            del bigdic2[amin]
-            son2sunzilist.append(amin)
-
-        print(son2sunzilist)
-
-        bigdic3 = {}
-        for i in range(15):
-            for j in range(15):
-                if chessboardson3[i][j] == 0:
-                    chessboardson3moni = chessboardson3.copy()
-                    chessboardson3moni[i][j] = -1  # 第二次模拟 下黑棋
-                    bigdic3[(i, j)] = suanfen(chessboardson3moni)
-
-        son3sunzilist = []
-        # print(bigdic3)
-        for i in range(3):
-            amin = min(bigdic3, key=bigdic3.get)
-            son3sunzilist.append(bigdic3[amin])
-
-            del bigdic3[amin]
-            son3sunzilist.append(amin)
-
-        print(son3sunzilist)
+            chessboardlist.append(chessboardson)
 
 
-        bijiaoerzi=[]
-        bijiaoerzi.append(son1sunzilist[0])
-        bijiaoerzi.append(son2sunzilist[0])
-        bijiaoerzi.append(son3sunzilist[0])
+
+        for index in range(len(erzilist)):
+            bigdicerzi = {}
+            for i in range(15):
+                for j in range(15):
+                    if chessboardlist[index][i][j] == 0:
+                        chessboardsonmoni = chessboardlist[index].copy()
+                        chessboardsonmoni[i][j] = -1  # 第二次模拟 下黑棋
+                        bigdicerzi[(i, j)] = suanfen(chessboardsonmoni)
+
+
+            sunzilist = []
+
+            for i in range(3):
+                amin = min(bigdicerzi, key=bigdicerzi.get)
+
+                sunzilist.append(bigdicerzi[amin])
+
+                del bigdicerzi[amin]
+                sunzilist.append(amin)
+
+            print(sunzilist)
+            bijiaoerzi.append(sunzilist[0])
+
+
+
+
+
+
 
         print(bijiaoerzi)
         indexoferzi=bijiaoerzi.index(max(bijiaoerzi))
-        print(erzilist[indexoferzi])
+        print("白下",erzilist[indexoferzi])
         self.candidate_list.clear()
         self.candidate_list.append((erzilist[indexoferzi][0],erzilist[indexoferzi][1]))
     
@@ -189,7 +153,7 @@ class AI(object):
 def suanfen(chessboard): #此方法只用于得到棋盘上三处最大value以及位置 不应修改外部变量
 
 
-    #print("算一下局面分")
+    
     global totalmark
     totalmark = 0
 
@@ -198,13 +162,13 @@ def suanfen(chessboard): #此方法只用于得到棋盘上三处最大value以�
         for j in range(15):
 
 
-            #print((i,j))
+            
 
             jugby5(i, j, chessboard,"heng")
             jugby5(i, j, chessboard, "shu")
             jugby5(i, j, chessboard, "xie")
             jugby5(i, j, chessboard, "fanxie")
-    #print(totalmark)
+   
     return totalmark
 
 
@@ -230,7 +194,7 @@ def jugby5(x,y,chessboard,mode):
         detx=1
         dety=-1
     result=[]
-    #print((x+detx,y+dety),(x+detx*2,y+dety*2),(x+detx*3,y+dety*3),(x+detx*4,y+dety*4))
+    
     if sizeok(x+detx,y+dety,15) and sizeok(x+2*detx,y+2*dety,15) and sizeok(x+3*detx,y+3*dety,15) \
             and sizeok(x+4*detx,y+4*dety,15):
 
@@ -255,12 +219,11 @@ def jugby5(x,y,chessboard,mode):
         result.append(chessboard[x][y])
         result.append(chessboard[x + detx][y + dety])
 
-    #print(result)
+   
     numofe=result.count(1)
     numofm=result.count(-1) #m是黑棋 黑棋会导致负分
     numofkeng=result.count(0)
-    #print(numofe,numofm,numofkeng)
-
+   
     if len(result)==5:
         if numofkeng==0:
             if numofe==5 :
@@ -303,11 +266,11 @@ def jugby5(x,y,chessboard,mode):
                 totalmark = totalmark + 10
             elif numofm == 1 :
                 totalmark = totalmark + 10*-1
-                print("test1")
 
 
 
-        #print(mode,totalmark)
+
+        
 
 def sizeok(x,y,size):
     if x>=0 and x<=size-1 and y>=0 and y<=size-1:

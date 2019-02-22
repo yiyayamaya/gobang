@@ -166,7 +166,7 @@ def putPiece(piece_color):
 
 
         newAI=gobang_2019_new.AI(15, 1, 1)  #new AI执1
-
+        print("黑下",(click_y//35-1,click_x//35))
         chessboard[click_y//35-1][click_x//35]=-1 #实体棋盘即玩家执-1
         newAI.go(chessboard)
         #print(newAI.candidate_list)
